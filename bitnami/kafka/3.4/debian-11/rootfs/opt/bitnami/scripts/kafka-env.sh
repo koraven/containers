@@ -11,7 +11,7 @@
 # Load logging library
 # shellcheck disable=SC1090,SC1091
 . /opt/bitnami/scripts/liblog.sh
-
+. /opt/bitnami/scripts/libvalidations.sh
 export BITNAMI_ROOT_DIR="/opt/bitnami"
 export BITNAMI_VOLUME_DIR="/bitnami"
 
@@ -103,7 +103,9 @@ export KAFKA_CFG_MAX_REQUEST_SIZE="${KAFKA_CFG_MAX_REQUEST_SIZE:-1048576}"
 export KAFKA_CFG_MAX_PARTITION_FETCH_BYTES="${KAFKA_CFG_MAX_PARTITION_FETCH_BYTES:-1048576}"
 export KAFKA_ENABLE_KRAFT="${KAFKA_ENABLE_KRAFT:-no}"
 export KAFKA_KRAFT_CLUSTER_ID="${KAFKA_KRAFT_CLUSTER_ID:-}"
-
+if  is_boolean_yes "$KAFKA_ENABLE_KRAFT"; then
+    unset KAFKA_CFG_ADVERTISED_LISTENERS
+fi
 # ZooKeeper connection settings
 export KAFKA_ZOOKEEPER_PROTOCOL="${KAFKA_ZOOKEEPER_PROTOCOL:-PLAINTEXT}"
 export KAFKA_ZOOKEEPER_PASSWORD="${KAFKA_ZOOKEEPER_PASSWORD:-}"

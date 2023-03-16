@@ -862,7 +862,7 @@ kafka_initialize() {
             if [[ -n "$KAFKA_CFG_SASL_ENABLED_MECHANISMS" ]]; then
                 kafka_server_conf_set sasl.enabled.mechanisms "$KAFKA_CFG_SASL_ENABLED_MECHANISMS"
                 kafka_generate_jaas_authentication_file "${internal_protocol:-}" "${client_protocol:-}"
-                [[ "$KAFKA_CFG_SASL_ENABLED_MECHANISMS" =~ "SCRAM" ]] && kafka_create_sasl_scram_zookeeper_users
+                [[ "$KAFKA_CFG_SASL_ENABLED_MECHANISMS" =~ "SCRAM" ]] && is_boolean_yes "$KAFKA_ENABLE_KRAFT" && kafka_create_sasl_scram_zookeeper_users
             else
                 print_validation_error "Specified SASL protocol but no SASL mechanisms provided in KAFKA_CFG_SASL_ENABLED_MECHANISMS"
             fi
